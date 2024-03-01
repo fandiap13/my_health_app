@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:ble_client/enums.dart';
+import 'package:ble_client/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ class BluetoothController extends GetxController {
   final Rx<Status> status = Status.NONE.obs;
   final Rx<BluetoothDevice?> deviceConnected = Rx<BluetoothDevice?>(null);
   final errorMessage = "".obs;
+
   // pengukuran kesehatan
   StreamSubscription<List<int>>? subscription;
   BluetoothCharacteristic? targetCharacteristic;
@@ -23,27 +25,12 @@ class BluetoothController extends GetxController {
     var bluetoothPermission = await Permission.location.request();
     if (!bluetoothPermission.isGranted) {
       if (context.mounted) {
-        showDialog(
+        AppUtils.confirmDialog(
             context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: const Text("You must enable location permission ?"),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      openAppSettings();
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text("Ya"),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close alert dialog
-                    },
-                    child: const Text("tidak"),
-                  ),
-                ],
-              );
+            title: "Alert !",
+            message: "You must enable location premission",
+            action: () {
+              openAppSettings();
             });
       }
       return;
@@ -54,7 +41,6 @@ class BluetoothController extends GetxController {
         await FlutterBluePlus.adapterState.first;
     if (bluetoothState != BluetoothAdapterState.on) {
       await FlutterBluePlus.turnOn();
-      return;
     }
 
     // cari perangkat
@@ -95,9 +81,10 @@ class BluetoothController extends GetxController {
         errorMessage.value = "Perangkat gagal tersambung !";
       }
       return;
+    } else {
+      errorMessage.value = "Perangkat tidak ditemukan !";
+      status.value = Status.FAILED;
     }
-    errorMessage.value = "Perangkat tidak ditemukan !";
-    status.value = Status.FAILED;
   }
 
   // mengecek koneksi perangkat dengan esp
@@ -118,38 +105,52 @@ class BluetoothController extends GetxController {
 
   // mengambil data pada perangkat esp32 berdasarkan sensor yang digunakan
   Future<void> getDataPerangkat(String sensorName) async {
-    isLoading.value = true;
-    // Reads all characteristics
-    String charID;
-    if (sensorName.toLowerCase() == "oksimeter") {
-      charID = "0e1c52dc-6e6f-462d-89ed-9c30d3564ce3";
-    } else {
-      charID = "7f7cdd10-883b-4611-aa6a-939078035f7d";
-    }
+    try {
+      isLoading.value = true;
+      // Reads all characteristics
+      String charID;
+      if (sensorName.toLowerCase() == "oksimeter") {
+        charID = "0e1c52dc-6e6f-462d-89ed-9c30d3564ce3";
+      } else {
+        charID = "7f7cdd10-883b-4611-aa6a-939078035f7d";
+      }
 
-    List<BluetoothService> services =
-        await deviceConnected.value!.discoverServices();
-    for (BluetoothService service in services) {
-      for (BluetoothCharacteristic characteristic in service.characteristics) {
-        if (characteristic.uuid.toString() == charID) {
-          targetCharacteristic = characteristic;
+      List<BluetoothService> services =
+          await deviceConnected.value!.discoverServices();
+      for (BluetoothService service in services) {
+        for (BluetoothCharacteristic characteristic
+            in service.characteristics) {
+          if (characteristic.uuid.toString() == charID) {
+            targetCharacteristic = characteristic;
+          }
         }
       }
-    }
 
-    isLoading.value = false;
-    // membaca data dari notify
-    subscription = targetCharacteristic!.onValueReceived.listen((value) {
-      // menerjemahkan ke dalam bentuk string yang bisa dibaca
-      List<dynamic> dataList = jsonDecode(String.fromCharCodes(value));
-      List<double> doubleList =
-          dataList.map<double>((dynamic item) => item.toDouble()).toList();
-      // masukkan ke variable hasilPengukuran
-      hasilPengukuran.assignAll(doubleList);
-    }, onError: (err) {
-      print(err);
-    });
-    await targetCharacteristic?.setNotifyValue(true);
+      // jika characteristik tidak ditemukan
+      if (targetCharacteristic == null || targetCharacteristic == "") {
+        errorMessage.value = "Perangkat tidak dikenali !";
+        status.value = Status.FAILED;
+        return;
+      }
+
+      isLoading.value = false;
+      // membaca data dari notify
+      subscription = targetCharacteristic!.onValueReceived.listen((value) {
+        // menerjemahkan ke dalam bentuk string yang bisa dibaca
+        List<dynamic> dataList = jsonDecode(String.fromCharCodes(value));
+        List<double> doubleList =
+            dataList.map<double>((dynamic item) => item.toDouble()).toList();
+        // masukkan ke variable hasilPengukuran
+        hasilPengukuran.assignAll(doubleList);
+      }, onError: (err) {
+        print(err);
+      });
+      await targetCharacteristic?.setNotifyValue(true);
+    } catch (e) {
+      errorMessage.value = "Terdapat kesalahan saat mengambil data perangkat !";
+      status.value = Status.FAILED;
+      print(e);
+    }
   }
 
   Future<void> stopGetDataDevice() async {
@@ -164,6 +165,15 @@ class BluetoothController extends GetxController {
   // memutuskan perangkat
   Future<void> disconnectDevice() async {
     await deviceConnected.value?.disconnect();
+    deviceConnected.value = null;
+  }
+
+  // memutuskan semua perangkat
+  Future<void> disconnectAllDevices() async {
+    List<BluetoothDevice> devs = FlutterBluePlus.connectedDevices;
+    for (BluetoothDevice dev in devs) {
+      await dev.disconnect();
+    }
     deviceConnected.value = null;
   }
 }

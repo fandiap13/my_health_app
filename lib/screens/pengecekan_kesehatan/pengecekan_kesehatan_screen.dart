@@ -1,9 +1,11 @@
-import 'package:ble_client/controller/BluetoothController.dart';
+import 'package:ble_client/components/BottomNavBar.dart';
+import 'package:ble_client/constants.dart';
+import 'package:ble_client/controllers/bluetooth_controller.dart';
 import 'package:ble_client/enums.dart';
-import 'package:ble_client/screen/home/home_screen.dart';
-import 'package:ble_client/screen/pengecekan_kesehatan/components/connected_device_component.dart';
-import 'package:ble_client/screen/pengecekan_kesehatan/components/connecting_device_component.dart';
-import 'package:ble_client/screen/pengecekan_kesehatan/components/disconnected_device_component.dart';
+import 'package:ble_client/screens/home/home_screen.dart';
+import 'package:ble_client/screens/pengecekan_kesehatan/components/connected_device_component.dart';
+import 'package:ble_client/screens/pengecekan_kesehatan/components/connecting_device_component.dart';
+import 'package:ble_client/screens/pengecekan_kesehatan/components/disconnected_device_component.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -39,6 +41,14 @@ class _PengecekanKesehatanState extends State<PengecekanKesehatan> {
               return const DisconnectedDeviceComponent();
             }
           }),
+          bottomNavigationBar: Obx(
+            () => Visibility(
+                visible: (bluetoothC.status.value != Status.LOADING &&
+                    bluetoothC.status.value != Status.FAILED),
+                child: const ButtonNavBar(
+                    bgColor: kBgGray,
+                    selectedMenu: MenuState.PENGECEKAN_KESEHATAN)),
+          ),
         ),
       ),
     );

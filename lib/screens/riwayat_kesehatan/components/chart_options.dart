@@ -1,4 +1,4 @@
-import 'package:ble_client/screen/riwayat_kesehatan/components/toggle_item.dart';
+import 'package:ble_client/screens/riwayat_kesehatan/components/toggle_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 

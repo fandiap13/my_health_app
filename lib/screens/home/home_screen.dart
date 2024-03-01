@@ -1,17 +1,30 @@
 import 'package:ble_client/components/BottomNavBar.dart';
 import 'package:ble_client/constants.dart';
 import 'package:ble_client/enums.dart';
-import 'package:ble_client/screen/home/components/header_component.dart';
-import 'package:ble_client/screen/home/components/health_card.dart';
-import 'package:ble_client/screen/riwayat_kesehatan/riwayat_kesehatan_screen.dart';
+import 'package:ble_client/screens/home/components/header_component.dart';
+import 'package:ble_client/screens/home/components/health_card.dart';
+import 'package:ble_client/screens/riwayat_kesehatan/riwayat_kesehatan_screen.dart';
+import 'package:ble_client/screens/sign_in/sign_in_screen.dart';
+import 'package:ble_client/services/app_service.dart';
 import 'package:ble_client/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-  static String routeName = "/";
+  static String routeName = "/home";
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    AppService.checkUserAfterLogin();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +36,10 @@ class HomeScreen extends StatelessWidget {
             context: context,
             title: "Keluar",
             message: "Apakah anda ingin keluar dari aplikasi ?",
-            action: () {
-              SystemNavigator.pop();
+            action: () async {
+              // SystemNavigator.pop();
+              // print("kontrol");
+              await Get.offNamed(SignInScreen.routeName);
             });
         return false;
       },

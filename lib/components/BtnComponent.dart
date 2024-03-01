@@ -21,13 +21,13 @@ class BtnComponent extends StatelessWidget {
         style: ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(btnColor ?? kBlueColor),
             padding: const MaterialStatePropertyAll(
-                EdgeInsets.symmetric(vertical: 18)),
+                EdgeInsets.symmetric(vertical: 15)),
             shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40)))),
         onPressed: action,
         child: Text(
           text,
-          style: TextStyle(fontSize: 24, color: textColor ?? Colors.white),
+          style: TextStyle(fontSize: 20, color: textColor ?? Colors.white),
         ));
   }
 }

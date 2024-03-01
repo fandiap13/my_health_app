@@ -1,7 +1,7 @@
 import 'package:ble_client/components/BtnComponent.dart';
 import 'package:ble_client/constants.dart';
-import 'package:ble_client/controller/BluetoothController.dart';
-import 'package:ble_client/screen/pengecekan_kesehatan/pengecekan_kesehatan_screen.dart';
+import 'package:ble_client/controllers/bluetooth_controller.dart';
+import 'package:ble_client/screens/pengecekan_kesehatan/pengecekan_kesehatan_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -67,28 +67,34 @@ class _HasilPengecekanScreenState extends State<HasilPengecekanScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (argument['title'].toLowerCase() == "oksimeter") ...[
-                        CardHasilPengecekan(
-                            title: "Saturasi Oksigen",
-                            satuanNilai: "%",
-                            value: bluetoothC.hasilPengukuran.isEmpty
-                                ? 0.0
-                                : bluetoothC.hasilPengukuran[0],
-                            isLoading: bluetoothC.isLoading.value),
-                        CardHasilPengecekan(
-                            title: "Detak Jantung",
-                            satuanNilai: "bpm",
-                            value: bluetoothC.hasilPengukuran.isEmpty
-                                ? 0.0
-                                : bluetoothC.hasilPengukuran[1],
-                            isLoading: bluetoothC.isLoading.value),
+                        Expanded(
+                          child: CardHasilPengecekan(
+                              title: "Saturasi Oksigen",
+                              satuanNilai: "%",
+                              value: bluetoothC.hasilPengukuran.isEmpty
+                                  ? 0.0
+                                  : bluetoothC.hasilPengukuran[0],
+                              isLoading: bluetoothC.isLoading.value),
+                        ),
+                        Expanded(
+                          child: CardHasilPengecekan(
+                              title: "Detak Jantung",
+                              satuanNilai: "bpm",
+                              value: bluetoothC.hasilPengukuran.isEmpty
+                                  ? 0.0
+                                  : bluetoothC.hasilPengukuran[1],
+                              isLoading: bluetoothC.isLoading.value),
+                        ),
                       ] else ...[
-                        CardHasilPengecekan(
-                            title: "Suhu tubuh",
-                            satuanNilai: "°C",
-                            value: bluetoothC.hasilPengukuran.isEmpty
-                                ? 0.0
-                                : bluetoothC.hasilPengukuran[0],
-                            isLoading: bluetoothC.isLoading.value),
+                        Expanded(
+                          child: CardHasilPengecekan(
+                              title: "Suhu tubuh",
+                              satuanNilai: "°C",
+                              value: bluetoothC.hasilPengukuran.isEmpty
+                                  ? 0.0
+                                  : bluetoothC.hasilPengukuran[0],
+                              isLoading: bluetoothC.isLoading.value),
+                        ),
                       ]
                     ],
                   ),
@@ -142,6 +148,7 @@ class CardHasilPengecekan extends StatelessWidget {
             ] else ...[
               Text(
                 title,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -157,16 +164,20 @@ class CardHasilPengecekan extends StatelessWidget {
                     Text(
                       "${value.toString()} ",
                       style: const TextStyle(
-                          fontSize: 35,
+                          fontSize: 22,
                           fontWeight: FontWeight.w500,
-                          color: kTextColor),
+                          color: kBlueColor),
                     ),
-                    Text(
-                      satuanNilai,
-                      style: const TextStyle(
-                          fontSize: 20,
-                          color: kTextColor,
-                          fontWeight: FontWeight.w500),
+                    Expanded(
+                      child: Text(
+                        satuanNilai,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: const TextStyle(
+                            fontSize: 18,
+                            color: kBlueColor,
+                            fontWeight: FontWeight.w500),
+                      ),
                     ),
                   ],
                 ),

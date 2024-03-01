@@ -1,6 +1,6 @@
 import 'package:ble_client/components/BtnComponent.dart';
 import 'package:ble_client/constants.dart';
-import 'package:ble_client/controller/BluetoothController.dart';
+import 'package:ble_client/controllers/bluetooth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -46,11 +46,9 @@ class _DisconnectedDeviceComponentState
             "Tekan hubungkan untuk menyambungkan aplikasi ke perangkat sensor",
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontWeight: FontWeight.w500, color: kTextColor, fontSize: 20),
+                fontWeight: FontWeight.w500, color: kTextColor, fontSize: 18),
           ),
-          const SizedBox(
-            height: 35.0,
-          ),
+          const Spacer(),
           SizedBox(
             width: double.infinity,
             child: BtnComponent(
@@ -59,9 +57,9 @@ class _DisconnectedDeviceComponentState
                   await bluetoothC.checkBluetoothDevice(context);
                 }),
           ),
-          const SizedBox(
-            height: 60.0,
-          ),
+          // const SizedBox(
+          //   height: 60.0,
+          // ),
         ],
       ),
     );
@@ -93,8 +91,8 @@ class CheckCard extends StatelessWidget {
         children: [
           Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: iconColor, borderRadius: BorderRadius.circular(25)),
+              decoration:
+                  BoxDecoration(color: iconColor, shape: BoxShape.circle),
               child: Icon(
                 icon,
                 size: 40,
@@ -105,6 +103,7 @@ class CheckCard extends StatelessWidget {
           ),
           Text(
             title,
+            textAlign: TextAlign.center,
             style: const TextStyle(
                 fontSize: 18, color: kTextColor, fontWeight: FontWeight.w500),
           )

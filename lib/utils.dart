@@ -15,10 +15,10 @@ class AppUtils {
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
           ),
           title: Text(
-            title.toString(),
+            title ?? "",
             textAlign: TextAlign.center,
           ),
-          content: Text(message.toString()),
+          content: Text(message ?? ""),
           //     Navigator.of(context).pop();
           actions: <Widget>[
             Container(
@@ -36,9 +36,9 @@ class AppUtils {
                             shape: MaterialStatePropertyAll(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(40)))),
-                        onPressed: () {
-                          action();
+                        onPressed: () async {
                           Navigator.of(context).pop();
+                          action();
                         },
                         child: const Text(
                           "Ok",
