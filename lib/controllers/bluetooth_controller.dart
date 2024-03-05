@@ -12,12 +12,21 @@ class BluetoothController extends GetxController {
   final Rx<Status> status = Status.NONE.obs;
   final Rx<BluetoothDevice?> deviceConnected = Rx<BluetoothDevice?>(null);
   final errorMessage = "".obs;
+  Rx<DateTime?> durasiAwal = Rx<DateTime?>(null);
 
   // pengukuran kesehatan
   StreamSubscription<List<int>>? subscription;
   BluetoothCharacteristic? targetCharacteristic;
   RxBool isLoading = false.obs;
   RxList<double> hasilPengukuran = <double>[].obs;
+
+  void clearAllData() {
+    isLoading.value = false;
+    hasilPengukuran.clear();
+    durasiAwal.value = null;
+    errorMessage.value = "";
+    status.value = Status.NONE;
+  }
 
   // menyambungkan ke perangkat
   Future<void> checkBluetoothDevice(BuildContext context) async {
@@ -44,8 +53,7 @@ class BluetoothController extends GetxController {
     }
 
     // cari perangkat
-    errorMessage.value = "";
-    deviceConnected.value = null;
+    clearAllData();
     status.value = Status.LOADING;
     StreamSubscription<List<ScanResult>>? subscription;
     subscription = FlutterBluePlus.onScanResults.listen(
@@ -89,6 +97,7 @@ class BluetoothController extends GetxController {
 
   // mengecek koneksi perangkat dengan esp
   bool checkConnectionDevice() {
+    // print(status.value != Status.LOADING && status.value != Status.FAILED);
     if (deviceConnected.value != null) {
       // mengambil semua perangkat yang terkoneksi dengan aplikasi
       List<BluetoothDevice> devs = FlutterBluePlus.connectedDevices;
@@ -106,7 +115,7 @@ class BluetoothController extends GetxController {
   // mengambil data pada perangkat esp32 berdasarkan sensor yang digunakan
   Future<void> getDataPerangkat(String sensorName) async {
     try {
-      isLoading.value = true;
+      clearAllData();
       // Reads all characteristics
       String charID;
       if (sensorName.toLowerCase() == "oksimeter") {
@@ -130,12 +139,15 @@ class BluetoothController extends GetxController {
       if (targetCharacteristic == null || targetCharacteristic == "") {
         errorMessage.value = "Perangkat tidak dikenali !";
         status.value = Status.FAILED;
+        await disconnectDevice();
         return;
       }
 
       isLoading.value = false;
       // membaca data dari notify
+      durasiAwal.value = DateTime.now();
       subscription = targetCharacteristic!.onValueReceived.listen((value) {
+        // jika durasi awal == null
         // menerjemahkan ke dalam bentuk string yang bisa dibaca
         List<dynamic> dataList = jsonDecode(String.fromCharCodes(value));
         List<double> doubleList =
@@ -147,9 +159,13 @@ class BluetoothController extends GetxController {
       });
       await targetCharacteristic?.setNotifyValue(true);
     } catch (e) {
+      // jika ada kesalahan saat pengambilan data
       errorMessage.value = "Terdapat kesalahan saat mengambil data perangkat !";
       status.value = Status.FAILED;
+      await disconnectDevice();
       print(e);
+    } finally {
+      durasiAwal.value = null;
     }
   }
 

@@ -49,6 +49,7 @@ dependencies:
   flutter_localization: ^0.2.0
   google_sign_in: ^6.2.1
   shared_preferences: ^2.2.2
+  fluttertoast: ^8.2.4
 
 dev_dependencies:
   flutter_test:

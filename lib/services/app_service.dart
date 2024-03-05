@@ -8,6 +8,7 @@ class AppService {
   // untuk mengecek apakah user sudah login (halaman setelah login)
   static Future<void> checkUserAfterLogin() async {
     var currentUser = await UserPreferences.getCurrentUser();
+    // print(currentUser);
     if (currentUser == null) {
       await UserPreferences.removeCurrentUser();
       await GoogleSignIn().signOut();

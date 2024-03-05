@@ -1,6 +1,10 @@
 import 'package:ble_client/components/BtnComponent.dart';
+import 'package:ble_client/components/ErrorMessageComponent.dart';
+import 'package:ble_client/components/SuccessMessageComponent.dart';
 import 'package:ble_client/constants.dart';
 import 'package:ble_client/controllers/bluetooth_controller.dart';
+import 'package:ble_client/controllers/pengecekan_controller.dart';
+import 'package:ble_client/enums.dart';
 import 'package:ble_client/screens/pengecekan_kesehatan/pengecekan_kesehatan_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +21,7 @@ class HasilPengecekanScreen extends StatefulWidget {
 
 class _HasilPengecekanScreenState extends State<HasilPengecekanScreen> {
   final bluetoothC = Get.put(BluetoothController());
+  final pengecekanC = PengecekanController();
   final Map argument = Get.arguments;
 
   @override
@@ -31,8 +36,10 @@ class _HasilPengecekanScreenState extends State<HasilPengecekanScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        await bluetoothC.stopGetDataDevice();
-        Get.offNamed(PengecekanKesehatan.routeName);
+        if (pengecekanC.statusSaveData.value != Status.LOADING) {
+          await bluetoothC.stopGetDataDevice();
+          Get.offNamed(PengecekanKesehatan.routeName);
+        }
         return false;
       },
       child: SafeArea(
@@ -42,78 +49,110 @@ class _HasilPengecekanScreenState extends State<HasilPengecekanScreen> {
               argument['title'],
             ),
           ),
-          body: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 100,
-                ),
-                Center(
-                  child: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: Image.asset(
-                        argument['imgUrl'],
-                        fit: BoxFit.contain,
-                      )),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (argument['title'].toLowerCase() == "oksimeter") ...[
-                        Expanded(
-                          child: CardHasilPengecekan(
-                              title: "Saturasi Oksigen",
-                              satuanNilai: "%",
-                              value: bluetoothC.hasilPengukuran.isEmpty
-                                  ? 0.0
-                                  : bluetoothC.hasilPengukuran[0],
-                              isLoading: bluetoothC.isLoading.value),
-                        ),
-                        Expanded(
-                          child: CardHasilPengecekan(
-                              title: "Detak Jantung",
-                              satuanNilai: "bpm",
-                              value: bluetoothC.hasilPengukuran.isEmpty
-                                  ? 0.0
-                                  : bluetoothC.hasilPengukuran[1],
-                              isLoading: bluetoothC.isLoading.value),
-                        ),
-                      ] else ...[
-                        Expanded(
-                          child: CardHasilPengecekan(
-                              title: "Suhu tubuh",
-                              satuanNilai: "°C",
-                              value: bluetoothC.hasilPengukuran.isEmpty
-                                  ? 0.0
-                                  : bluetoothC.hasilPengukuran[0],
-                              isLoading: bluetoothC.isLoading.value),
-                        ),
-                      ]
-                    ],
+          body: Obx(() {
+            if (pengecekanC.errorMessage.value != "" &&
+                pengecekanC.statusSaveData.value == Status.FAILED) {
+              return ErrorMessageComponent(
+                  errorMessage: pengecekanC.errorMessage.value,
+                  action: () {
+                    bluetoothC.clearAllData();
+                    Get.offNamed(PengecekanKesehatan.routeName);
+                  });
+            }
+            if (pengecekanC.successMessage.value != "" &&
+                pengecekanC.statusSaveData.value == Status.SUCCESS) {
+              return SuccessMessageComponent(
+                  message: pengecekanC.successMessage.value,
+                  action: () {
+                    bluetoothC.clearAllData();
+                    Get.offNamed(PengecekanKesehatan.routeName);
+                  });
+            }
+            // return Container(
+            //   child: const Text("cek"),
+            // );
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 100,
                   ),
-                ),
-                const Spacer(),
-                SizedBox(
-                    width: double.infinity,
-                    child: BtnComponent(
-                        action: () async {
-                          await bluetoothC.stopGetDataDevice();
-                          Get.offNamed(PengecekanKesehatan.routeName);
-                        },
-                        text: "Selesai")),
-                const SizedBox(
-                  height: 60,
-                )
-              ],
-            ),
-          ),
+                  Center(
+                    child: SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: Image.asset(
+                          argument['imgUrl'],
+                          fit: BoxFit.contain,
+                        )),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Obx(
+                    () => Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (argument['title'].toLowerCase() == "oksimeter") ...[
+                          Expanded(
+                            child: CardHasilPengecekan(
+                                title: "Saturasi Oksigen",
+                                satuanNilai: "%",
+                                value: bluetoothC.hasilPengukuran.isEmpty
+                                    ? 0.0
+                                    : bluetoothC.hasilPengukuran[0],
+                                isLoading: bluetoothC.isLoading.value),
+                          ),
+                          Expanded(
+                            child: CardHasilPengecekan(
+                                title: "Detak Jantung",
+                                satuanNilai: "bpm",
+                                value: bluetoothC.hasilPengukuran.isEmpty
+                                    ? 0.0
+                                    : bluetoothC.hasilPengukuran[1],
+                                isLoading: bluetoothC.isLoading.value),
+                          ),
+                        ] else ...[
+                          Expanded(
+                            child: CardHasilPengecekan(
+                                title: "Suhu tubuh",
+                                satuanNilai: "°C",
+                                value: bluetoothC.hasilPengukuran.isEmpty
+                                    ? 0.0
+                                    : bluetoothC.hasilPengukuran[0],
+                                isLoading: bluetoothC.isLoading.value),
+                          ),
+                        ]
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  Obx(
+                    () => SizedBox(
+                        width: double.infinity,
+                        child: BtnComponent(
+                            isLoading: pengecekanC.statusSaveData.value ==
+                                Status.LOADING,
+                            action: () async {
+                              if (pengecekanC.statusSaveData.value !=
+                                  Status.LOADING) {
+                                await pengecekanC.selesai(
+                                    jenisPerangkat:
+                                        argument['title'].toLowerCase(),
+                                    context: context);
+                              }
+                            },
+                            text: "Selesai")),
+                  ),
+                  const SizedBox(
+                    height: 60,
+                  )
+                ],
+              ),
+            );
+          }),
         ),
       ),
     );

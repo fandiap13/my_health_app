@@ -1,4 +1,6 @@
 import 'package:ble_client/components/BottomNavBar.dart';
+import 'package:ble_client/components/ErrorMessageComponent.dart';
+import 'package:ble_client/components/SuccessMessageComponent.dart';
 import 'package:ble_client/constants.dart';
 import 'package:ble_client/controllers/bluetooth_controller.dart';
 import 'package:ble_client/enums.dart';
@@ -35,6 +37,16 @@ class _PengecekanKesehatanState extends State<PengecekanKesehatan> {
           body: Obx(() {
             if (bluetoothC.status.value == Status.LOADING) {
               return const ConnectingDeviceComponent();
+            } else if (bluetoothC.status.value == Status.FAILED) {
+              return ErrorMessageComponent(
+                errorMessage: bluetoothC.errorMessage.value,
+                action: () => bluetoothC.clearAllData(),
+              );
+            } else if (bluetoothC.status.value == Status.SUCCESS) {
+              return SuccessMessageComponent(
+                message: "Perangkat berhasil terhubung",
+                action: () => bluetoothC.clearAllData(),
+              );
             } else if (bluetoothC.checkConnectionDevice()) {
               return const ConnectedDeviceComponent();
             } else {
@@ -43,8 +55,9 @@ class _PengecekanKesehatanState extends State<PengecekanKesehatan> {
           }),
           bottomNavigationBar: Obx(
             () => Visibility(
-                visible: (bluetoothC.status.value != Status.LOADING &&
-                    bluetoothC.status.value != Status.FAILED),
+                visible: (bluetoothC.status.value == Status.NONE &&
+                    // bluetoothC.status.value != Status.FAILED &&
+                    bluetoothC.checkConnectionDevice()),
                 child: const ButtonNavBar(
                     bgColor: kBgGray,
                     selectedMenu: MenuState.PENGECEKAN_KESEHATAN)),

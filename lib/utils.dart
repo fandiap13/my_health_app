@@ -1,7 +1,45 @@
 import 'package:ble_client/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AppUtils {
+  static scaffoldMessage(
+      {required String message, required BuildContext context}) {
+    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: kGreenColor,
+      elevation: 0,
+      dismissDirection: DismissDirection.up,
+      duration: const Duration(seconds: 5),
+      // behavior: SnackBarBehavior.floating,
+      // margin: EdgeInsets.only(
+      //     bottom: MediaQuery.of(context).size.height - 150,
+      //     left: 10,
+      //     right: 10),
+      action: SnackBarAction(
+        label: 'Dismiss',
+        disabledTextColor: Colors.white,
+        textColor: Colors.white,
+        onPressed: () {
+          //Do whatever you want
+          ScaffoldMessenger.of(context)
+              .hideCurrentSnackBar(); // Menutup Snackbar
+        },
+      ),
+    ));
+  }
+
+  static void toastMessage({required String message}) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: kGreenColor,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+
   static confirmDialog(
       {required BuildContext context,
       String? title,
@@ -73,5 +111,11 @@ class AppUtils {
         );
       },
     );
+  }
+
+  static void fieldFocusChange(
+      BuildContext context, FocusNode current, FocusNode nextFocus) {
+    current.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
   }
 }

@@ -3,6 +3,7 @@ import 'package:ble_client/enums.dart';
 import 'package:ble_client/screens/home/home_screen.dart';
 import 'package:ble_client/screens/pengecekan_kesehatan/pengecekan_kesehatan_screen.dart';
 import 'package:ble_client/screens/profile/profile_screen.dart';
+import 'package:ble_client/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -32,7 +33,11 @@ class ButtonNavBar extends StatelessWidget {
             NavButton(
               icon: Icons.home_rounded,
               active: selectedMenu == MenuState.HOME,
-              action: () => Get.toNamed(HomeScreen.routeName),
+              action: () {
+                // AppUtils.scaffoldMessage(message: "cek aja", context: context);
+                // AppUtils.toastMessage(message: "cek aja");
+                Get.toNamed(HomeScreen.routeName);
+              },
             ),
             NavButton(
               icon: Icons.medical_services_rounded,
