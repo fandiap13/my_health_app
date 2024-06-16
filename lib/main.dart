@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
     ));
 
     return GetMaterialApp(
-      title: 'Flutter BLE Client',
+      title: 'Peduliin',
       debugShowCheckedModeBanner: false,
       theme: myTheme(),
       getPages: appPages,

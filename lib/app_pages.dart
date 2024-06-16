@@ -3,6 +3,7 @@ import 'package:ble_client/screens/detail_riwayat_kesehatan/detail_riwayat_keseh
 import 'package:ble_client/screens/edit_profile/edit_profile_screen.dart';
 import 'package:ble_client/screens/hasil_pengecekan/hasil_pengecekan_screen.dart';
 import 'package:ble_client/screens/home/home_screen.dart';
+import 'package:ble_client/screens/panduan_pengecekan/panduan_pengecekan_screen.dart';
 import 'package:ble_client/screens/pengaturan_perangkat/pengaturan_perangkat_screen.dart';
 import 'package:ble_client/screens/pengecekan_kesehatan/pengecekan_kesehatan_screen.dart';
 import 'package:ble_client/screens/profile/profile_screen.dart';
@@ -34,4 +35,10 @@ List<GetPage> appPages = [
   GetPage(
       name: DetailRiwayatKesehatanScreen.routeName,
       page: () => const DetailRiwayatKesehatanScreen()),
+  GetPage(
+      name: DetailRiwayatKesehatanScreen.routeName,
+      page: () => const DetailRiwayatKesehatanScreen()),
+  GetPage(
+      name: PanduanPengecekanScreen.routeName,
+      page: () => const PanduanPengecekanScreen()),
 ];

@@ -1,9 +1,8 @@
 import 'package:ble_client/components/BackButton.dart';
 import 'package:ble_client/constants.dart';
 import 'package:ble_client/controllers/bluetooth_controller.dart';
-import 'package:ble_client/screens/hasil_pengecekan/hasil_pengecekan_screen.dart';
 import 'package:ble_client/screens/home/home_screen.dart';
-import 'package:ble_client/screens/pengaturan_perangkat/pengaturan_perangkat_screen.dart';
+import 'package:ble_client/screens/panduan_pengecekan/panduan_pengecekan_screen.dart';
 import 'package:ble_client/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -45,7 +44,7 @@ class _ConnectedDeviceComponentState extends State<ConnectedDeviceComponent> {
             children: [
               Container(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(40)),
@@ -55,63 +54,69 @@ class _ConnectedDeviceComponentState extends State<ConnectedDeviceComponent> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                                width: 100,
-                                height: 100,
-                                clipBehavior: Clip.none,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Image.asset(
-                                  "assets/images/device_img.png",
-                                )),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Esp 32 Device",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 20,
-                                      color: kDarkColor),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  "00:11:22:33:FF:EE",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: kBlueColor,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                  width: 80,
+                                  height: 80,
+                                  clipBehavior: Clip.none,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Image.asset(
+                                    "assets/images/device_img.png",
+                                  )),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "Terhubung",
+                                    const Text(
+                                      "Perangkat Kesehatan",
                                       style: TextStyle(
-                                          fontSize: 14, color: kDarkColor),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          color: kDarkColor),
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: false,
                                     ),
-                                    SizedBox(
-                                      width: 5,
+                                    const SizedBox(
+                                      height: 5,
                                     ),
-                                    Icon(
-                                      Icons.link_rounded,
-                                      color: kGreenColor,
+                                    Text(
+                                      bluetootC.myDeviceName,
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          color: kBlueColor,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    const Row(
+                                      children: [
+                                        Text(
+                                          "Terhubung",
+                                          style: TextStyle(
+                                              fontSize: 14, color: kDarkColor),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Icon(
+                                          Icons.link_rounded,
+                                          color: kGreenColor,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(
                           width: 15,
@@ -145,7 +150,7 @@ class _ConnectedDeviceComponentState extends State<ConnectedDeviceComponent> {
                       title: "Oksimeter",
                       imgUrl: "assets/images/oksimeter.png",
                       action: () {
-                        Get.toNamed(HasilPengecekanScreen.routeName,
+                        Get.toNamed(PanduanPengecekanScreen.routeName,
                             arguments: {
                               "imgUrl": "assets/images/oksimeter.png",
                               "title": "Oksimeter",
@@ -159,53 +164,53 @@ class _ConnectedDeviceComponentState extends State<ConnectedDeviceComponent> {
                       title: "Termometer",
                       imgUrl: "assets/images/termometer.png",
                       action: () {
-                        Get.toNamed(HasilPengecekanScreen.routeName,
+                        Get.toNamed(PanduanPengecekanScreen.routeName,
                             arguments: {
                               "imgUrl": "assets/images/termometer.png",
                               "title": "Termometer",
                             });
                       },
                     ),
-                    const SizedBox(
-                      height: 80.0,
-                    ),
+                    // const SizedBox(
+                    //   height: 80.0,
+                    // ),
                   ],
                 ),
               ),
-              Positioned(
-                  bottom: 0,
-                  right: 0,
-                  left: 0,
-                  child: GestureDetector(
-                    onTap: () =>
-                        Get.toNamed(PengaturanPerangkatScreen.routeName),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(40),
-                              bottomRight: Radius.circular(40)),
-                          color: kBlueColor),
-                      child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.settings,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 5.0,
-                            ),
-                            Text(
-                              "Pengaturan Perangkat",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 18,
-                                  color: Colors.white),
-                            )
-                          ]),
-                    ),
-                  ))
+              // Positioned(
+              //     bottom: 0,
+              //     right: 0,
+              //     left: 0,
+              //     child: GestureDetector(
+              //       onTap: () =>
+              //           Get.toNamed(PengaturanPerangkatScreen.routeName),
+              //       child: Container(
+              //         padding: const EdgeInsets.symmetric(vertical: 20),
+              //         decoration: const BoxDecoration(
+              //             borderRadius: BorderRadius.only(
+              //                 bottomLeft: Radius.circular(40),
+              //                 bottomRight: Radius.circular(40)),
+              //             color: kBlueColor),
+              //         child: const Row(
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: [
+              //               Icon(
+              //                 Icons.settings,
+              //                 color: Colors.white,
+              //               ),
+              //               SizedBox(
+              //                 width: 5.0,
+              //               ),
+              //               Text(
+              //                 "Pengaturan Perangkat",
+              //                 style: TextStyle(
+              //                     fontWeight: FontWeight.w500,
+              //                     fontSize: 18,
+              //                     color: Colors.white),
+              //               )
+              //             ]),
+              //       ),
+              //     ))
             ],
           ),
         ],

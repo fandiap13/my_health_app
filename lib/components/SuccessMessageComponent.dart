@@ -33,11 +33,15 @@ class SuccessMessageComponent extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                  fontSize: 26, color: kTextColor, fontWeight: FontWeight.w500),
+            Center(
+              child: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    fontSize: 26,
+                    color: kTextColor,
+                    fontWeight: FontWeight.w500),
+              ),
             ),
             const Spacer(),
             SizedBox(

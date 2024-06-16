@@ -30,7 +30,7 @@ class _DisconnectedDeviceComponentState
             bgColor: kLightBlueColor,
             iconColor: kBlueColor,
             icon: Icons.bluetooth,
-            title: "Pastikan bluetooth anda sudah hidup",
+            title: "Pastikan bluetooth pada smartphone anda sudah hidup",
           ),
           const SizedBox(
             height: 20.0,
@@ -38,8 +38,8 @@ class _DisconnectedDeviceComponentState
           const CheckCard(
             bgColor: kLightRedColor,
             iconColor: kRedColor,
-            icon: Icons.phone_android_sharp,
-            title: "Pastikan bluetooth anda sudah hidup",
+            icon: Icons.devices_other_rounded,
+            title: "Pastikan alat pengecekan kesehatan sudah dihidupkan",
           ),
           const Spacer(),
           const Text(

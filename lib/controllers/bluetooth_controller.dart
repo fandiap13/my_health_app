@@ -9,6 +9,9 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class BluetoothController extends GetxController {
+  final String myDeviceName = "48:E7:29:AC:97:BA";
+  final String myRemoteId = "esp32-server";
+
   final Rx<Status> status = Status.NONE.obs;
   final Rx<BluetoothDevice?> deviceConnected = Rx<BluetoothDevice?>(null);
   final errorMessage = "".obs;
@@ -61,8 +64,8 @@ class BluetoothController extends GetxController {
         if (results.isNotEmpty) {
           ScanResult r = results.last;
           // pengkondisian perangkat
-          if (r.device.remoteId.toString() == "48:E7:29:AC:97:BA" &&
-              r.device.advName.toString() == "esp32-server") {
+          if (r.device.remoteId.toString() == myDeviceName &&
+              r.device.advName.toString() == myRemoteId) {
             deviceConnected.value = r.device;
           }
         }
@@ -116,6 +119,7 @@ class BluetoothController extends GetxController {
   Future<void> getDataPerangkat(String sensorName) async {
     try {
       clearAllData();
+      isLoading.value = true;
       // Reads all characteristics
       String charID;
       if (sensorName.toLowerCase() == "oksimeter") {
@@ -143,10 +147,10 @@ class BluetoothController extends GetxController {
         return;
       }
 
-      isLoading.value = false;
       // membaca data dari notify
       durasiAwal.value = DateTime.now();
       subscription = targetCharacteristic!.onValueReceived.listen((value) {
+        isLoading.value = false;
         // jika durasi awal == null
         // menerjemahkan ke dalam bentuk string yang bisa dibaca
         List<dynamic> dataList = jsonDecode(String.fromCharCodes(value));

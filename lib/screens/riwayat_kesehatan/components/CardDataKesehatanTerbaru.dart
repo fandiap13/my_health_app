@@ -1,4 +1,7 @@
+import 'package:ble_client/components/PersentaseKesehatanTubuh.dart';
 import 'package:ble_client/constants.dart';
+import 'package:ble_client/enums.dart';
+import 'package:ble_client/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -82,20 +85,40 @@ class CardDataKesehatanTerbaru extends StatelessWidget {
                     children: [
                       Text(
                         nilai.toString(),
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 32,
-                            color: kGreenColor),
+                            color: AppUtils.presentaseKesehatanValue(
+                                        value: nilai,
+                                        pengecekanKesehatan: title) ==
+                                    PresentaseValueState.NORMAL
+                                ? kGreenColor
+                                : AppUtils.presentaseKesehatanValue(
+                                            value: nilai,
+                                            pengecekanKesehatan: title) ==
+                                        PresentaseValueState.HIGH
+                                    ? kRedColor
+                                    : kYellowColor),
                       ),
                       const SizedBox(
                         width: 5,
                       ),
                       Text(
                         satuanPengukuran,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 18,
-                            color: kGreenColor),
+                            color: AppUtils.presentaseKesehatanValue(
+                                        value: nilai,
+                                        pengecekanKesehatan: title) ==
+                                    PresentaseValueState.NORMAL
+                                ? kGreenColor
+                                : AppUtils.presentaseKesehatanValue(
+                                            value: nilai,
+                                            pengecekanKesehatan: title) ==
+                                        PresentaseValueState.HIGH
+                                    ? kRedColor
+                                    : kYellowColor),
                       ),
                     ],
                   ),
@@ -108,29 +131,8 @@ class CardDataKesehatanTerbaru extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        const SizedBox(
-          width: double.infinity,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: BarWidget(
-                    title: "Bahaya - hypoxemia",
-                    bgColor: kRedColor,
-                    maxValue: 90.0),
-              ),
-              Expanded(
-                child: BarWidget(
-                    title: "Rendah", bgColor: kYellowColor, maxValue: 90.0),
-              ),
-              Expanded(
-                child: BarWidget(
-                  title: "Normal",
-                  bgColor: kGreenColor,
-                ),
-              ),
-            ],
-          ),
+        PersentaseKesehatanTubuh(
+          namaParameterKesehatan: title,
         )
       ],
     );

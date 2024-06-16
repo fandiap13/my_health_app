@@ -25,7 +25,8 @@ class ErrorMessageComponent extends StatelessWidget {
             ),
             const Center(
               child: Icon(
-                CupertinoIcons.multiply_circle_fill,
+                // CupertinoIcons.multiply_circle_fill,
+                Icons.info_rounded,
                 color: kRedColor,
                 size: 140,
               ),

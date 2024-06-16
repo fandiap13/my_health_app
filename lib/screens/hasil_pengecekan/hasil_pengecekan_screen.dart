@@ -68,9 +68,7 @@ class _HasilPengecekanScreenState extends State<HasilPengecekanScreen> {
                     Get.offNamed(PengecekanKesehatan.routeName);
                   });
             }
-            // return Container(
-            //   child: const Text("cek"),
-            // );
+
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(

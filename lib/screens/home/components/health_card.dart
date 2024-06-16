@@ -68,12 +68,17 @@ class HealthCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(
-                nilai,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 35,
-                    color: kTextColor),
+              Expanded(
+                child: Text(
+                  nilai,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 30,
+                      color: kTextColor),
+                  overflow:
+                      TextOverflow.ellipsis, // Menambahkan properti overflow
+                  maxLines: 1, // Menambahkan properti maxLines
+                ),
               ),
               const SizedBox(
                 width: 5,

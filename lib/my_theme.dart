@@ -6,6 +6,7 @@ ThemeData myTheme() {
       useMaterial3: false,
       fontFamily: "Poppins",
       appBarTheme: appBarTheme(),
+      tooltipTheme: const TooltipThemeData(preferBelow: false),
       scaffoldBackgroundColor: Colors.white,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       inputDecorationTheme: inputDecorationTheme());

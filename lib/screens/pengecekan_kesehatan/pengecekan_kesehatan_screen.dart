@@ -28,7 +28,7 @@ class _PengecekanKesehatanState extends State<PengecekanKesehatan> {
       onWillPop: () async {
         // jika sedang tidak menyambungkan ke perangkat esp maka fungsi ini akan berjalan
         if (bluetoothC.status.value != Status.LOADING) {
-          Get.offNamed(HomeScreen.routeName);
+          Get.toNamed(HomeScreen.routeName);
         }
         return false;
       },

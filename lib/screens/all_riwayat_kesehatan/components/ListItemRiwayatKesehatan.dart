@@ -2,14 +2,21 @@ import 'package:ble_client/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-
 class ListItemRiwayatKesehatan extends StatelessWidget {
   const ListItemRiwayatKesehatan({
     super.key,
     required this.action,
+    required this.jenisPengecekan,
+    required this.value,
+    required this.tanggal,
+    required this.waktu,
   });
 
   final VoidCallback action;
+  final String jenisPengecekan;
+  final String tanggal;
+  final String waktu;
+  final double value;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +27,7 @@ class ListItemRiwayatKesehatan extends StatelessWidget {
         decoration: const BoxDecoration(
             border:
                 Border(bottom: BorderSide(width: 1.0, color: kTextGrayColor))),
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -30,39 +37,48 @@ class ListItemRiwayatKesehatan extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TitleItem(
-                      title: "Saturasi Oksigen Darah",
-                      imgUrl: "assets/icons/blood_oxygen.svg",
-                      satuanPengukuran: "%",
-                      value: 90.0,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    TitleItem(
-                      title: "Detak Jantung",
-                      imgUrl: "assets/icons/heart_rate.svg",
-                      satuanPengukuran: "bpm",
-                      value: 61.0,
-                    ),
+                    if (jenisPengecekan.toLowerCase() == "detak jantung") ...[
+                      TitleItem(
+                        title: "Detak Jantung",
+                        imgUrl: "assets/icons/heart_rate.svg",
+                        satuanPengukuran: "bpm",
+                        value: value,
+                      ),
+                    ] else if (jenisPengecekan.toLowerCase() ==
+                        "saturasi oksigen") ...[
+                      TitleItem(
+                        title: "Saturasi Oksigen Darah",
+                        imgUrl: "assets/icons/blood_oxygen.svg",
+                        satuanPengukuran: "%",
+                        value: value,
+                      ),
+                    ] else if (jenisPengecekan.toLowerCase() ==
+                        "suhu tubuh") ...[
+                      TitleItem(
+                        title: "Suhu Tubuh",
+                        imgUrl: "assets/icons/termometer.svg",
+                        satuanPengukuran: "°C",
+                        value: value,
+                      ),
+                    ]
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "22/10/2024",
-                      style: TextStyle(color: kTextGrayColor),
+                      tanggal,
+                      style: const TextStyle(color: kTextGrayColor),
                     ),
                     Text(
-                      "15:42",
-                      style: TextStyle(color: kTextGrayColor),
+                      waktu,
+                      style: const TextStyle(color: kTextGrayColor),
                     ),
                   ],
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
           ],

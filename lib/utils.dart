@@ -1,4 +1,5 @@
 import 'package:ble_client/constants.dart';
+import 'package:ble_client/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -29,13 +30,13 @@ class AppUtils {
     ));
   }
 
-  static void toastMessage({required String message}) {
+  static void toastMessage({required String message, Color? bgColor}) {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 1,
-        backgroundColor: kGreenColor,
+        backgroundColor: bgColor ?? kGreenColor,
         textColor: Colors.white,
         fontSize: 16.0);
   }
@@ -56,7 +57,10 @@ class AppUtils {
             title ?? "",
             textAlign: TextAlign.center,
           ),
-          content: Text(message ?? ""),
+          content: Text(
+            message ?? "",
+            textAlign: TextAlign.center,
+          ),
           //     Navigator.of(context).pop();
           actions: <Widget>[
             Container(
@@ -117,5 +121,34 @@ class AppUtils {
       BuildContext context, FocusNode current, FocusNode nextFocus) {
     current.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  static PresentaseValueState presentaseKesehatanValue(
+      {required double value, required String pengecekanKesehatan}) {
+    if (pengecekanKesehatan.toLowerCase() == "saturasi oksigen darah") {
+      if (value >= 95 && value <= 100) {
+        return PresentaseValueState.NORMAL;
+      } else if (value >= 90 && value <= 94) {
+        return PresentaseValueState.LOW;
+      } else {
+        return PresentaseValueState.HIGH;
+      }
+    } else if (pengecekanKesehatan.toLowerCase() == "detak jantung") {
+      if (value < 60) {
+        return PresentaseValueState.LOW;
+      } else if (value >= 60 && value <= 100) {
+        return PresentaseValueState.NORMAL;
+      } else {
+        return PresentaseValueState.HIGH;
+      }
+    } else {
+      if (value < 36.5) {
+        return PresentaseValueState.LOW;
+      } else if (value >= 36.5 && value <= 37.5) {
+        return PresentaseValueState.NORMAL;
+      } else {
+        return PresentaseValueState.HIGH;
+      }
+    }
   }
 }

@@ -3,7 +3,6 @@ import 'package:ble_client/enums.dart';
 import 'package:ble_client/screens/home/home_screen.dart';
 import 'package:ble_client/screens/pengecekan_kesehatan/pengecekan_kesehatan_screen.dart';
 import 'package:ble_client/screens/profile/profile_screen.dart';
-import 'package:ble_client/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

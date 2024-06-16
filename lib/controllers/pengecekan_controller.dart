@@ -1,9 +1,12 @@
+import 'package:ble_client/constants.dart';
 import 'package:ble_client/controllers/bluetooth_controller.dart';
 import 'package:ble_client/controllers/user_preferences.dart';
 import 'package:ble_client/enums.dart';
 import 'package:ble_client/models/user_model.dart';
+import 'package:ble_client/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class PengecekanController {
@@ -20,8 +23,19 @@ class PengecekanController {
 
   Future<void> selesai(
       {required String jenisPerangkat, required BuildContext context}) async {
-    await simpanPengecekan(jenisPerangkat: jenisPerangkat, context: context);
-    await bluetoothC.stopGetDataDevice();
+    Fluttertoast.cancel();
+    if (jenisPerangkat.toLowerCase() == "oksimeter" &&
+        bluetoothC.hasilPengukuran.length == 2) {
+      await simpanPengecekan(jenisPerangkat: jenisPerangkat, context: context);
+      await bluetoothC.stopGetDataDevice();
+    } else if (jenisPerangkat.toLowerCase() == "termometer" &&
+        bluetoothC.hasilPengukuran.length == 1) {
+      await simpanPengecekan(jenisPerangkat: jenisPerangkat, context: context);
+      await bluetoothC.stopGetDataDevice();
+    } else {
+      AppUtils.toastMessage(
+          message: "Data pengukuran masih kosong !", bgColor: kRedColor);
+    }
   }
 
   Future<void> simpanPengecekan(

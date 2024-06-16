@@ -1,36 +1,52 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+
 class DetailKesehatanModel {
-  String? namaLengkap;
-  String? namaPanggilan;
-  String? jenisKelamin;
-  String? email;
-  String? tanggalLahir;
   String? userId;
+  String? satuan;
+  double? nilai;
+  String? tanggalPengecekan;
+  String? waktu;
+  String? jenisPerangkat;
+  String? jenisPengecekan;
 
   DetailKesehatanModel(
-      {this.namaLengkap,
-      this.namaPanggilan,
-      this.jenisKelamin,
-      this.email,
-      this.tanggalLahir,
-      this.userId});
+      {this.userId,
+      this.satuan,
+      this.nilai,
+      this.tanggalPengecekan,
+      this.waktu,
+      this.jenisPerangkat,
+      this.jenisPengecekan});
 
   DetailKesehatanModel.fromJson(Map<String, dynamic> json) {
-    namaLengkap = json['nama_lengkap'];
-    namaPanggilan = json['nama_panggilan'];
-    jenisKelamin = json['jenis_kelamin'];
-    email = json['email'];
-    tanggalLahir = json['tanggal_lahir'];
     userId = json['user_id'];
+    satuan = json['satuan'];
+    nilai = json['nilai'];
+    if (json['tanggal_pengecekan'] != null) {
+      Timestamp timestamp = json['tanggal_pengecekan'];
+      DateTime dateTime = timestamp.toDate();
+      String tanggal = DateFormat('dd/MM/yy').format(dateTime).toString();
+      String formatWaktu = DateFormat('HH:mm:ss').format(dateTime).toString();
+      tanggalPengecekan = tanggal;
+      waktu = formatWaktu;
+    } else {
+      tanggalPengecekan = null;
+      waktu = null;
+    }
+    jenisPerangkat = json['jenis_perangkat'];
+    jenisPengecekan = json['jenis_pengecekan'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['nama_lengkap'] = namaLengkap;
-    data['nama_panggilan'] = namaPanggilan;
-    data['jenis_kelamin'] = jenisKelamin;
-    data['email'] = email;
-    data['tanggal_lahir'] = tanggalLahir;
     data['user_id'] = userId;
+    data['satuan'] = satuan;
+    data['nilai'] = nilai;
+    data['tanggal_pengecekan'] = tanggalPengecekan;
+    data['waktu'] = waktu;
+    data['jenis_perangkat'] = jenisPerangkat;
+    data['jenis_pengecekan'] = jenisPengecekan;
     return data;
   }
 }
