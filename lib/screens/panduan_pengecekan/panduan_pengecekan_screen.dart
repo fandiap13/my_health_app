@@ -29,22 +29,22 @@ class _PanduanPengecekanScreenState extends State<PanduanPengecekanScreen> {
       data = [
         {
           "text": "Hidupkan perangkat pengecekan kesehatan",
-          "image": null,
+          "image": "assets/images/turn_on_device.png",
         },
         {
           "text":
               "Hidupkan bluetooth pada smartphone untuk menyambungkan aplikasi ke perangkat pengecekan kesehatan",
-          "image": "assets/images/device_img.png"
+          "image": "assets/images/turn_on_bluetooth.png"
         },
         {
           "text":
               "Tempatkan pulse oksimeter pada jari telunjuk atau jari tengah Anda dan pastikan jari Anda bersih dan kering",
-          "image": "assets/images/device_img.png"
+          "image": "assets/images/check_oksimeter.png"
         },
         {
           "text":
               "Tekan tombol “Mulai Pengukuran” untuk mendapatkan hasil pengukuran denyut jantung (bpm) dan oksigen darah (%)",
-          "image": "assets/images/device_img.png"
+          "image": "assets/images/pairing.png"
         },
       ];
     }
@@ -52,22 +52,22 @@ class _PanduanPengecekanScreenState extends State<PanduanPengecekanScreen> {
       data = [
         {
           "text": "Hidupkan perangkat pengecekan kesehatan",
-          "image": null,
+          "image": "assets/images/turn_on_device.png",
         },
         {
           "text":
               "Hidupkan bluetooth pada smartphone untuk menyambungkan aplikasi ke perangkat pengecekan kesehatan",
-          "image": "assets/images/device_img.png"
+          "image": "assets/images/turn_on_bluetooth.png"
         },
         {
           "text":
               "Tekan tombol “Mulai Pengukuran” untuk mendapatkan hasil pengukuran suhu tubuh (C)",
-          "image": "assets/images/device_img.png"
+          "image": "assets/images/pairing.png"
         },
         {
           "text":
               "Arahkan termometer di dahi atau telapak tangan pada jarak sekitar 3-5 cm",
-          "image": "assets/images/device_img.png"
+          "image": "assets/images/check_temp.png"
         },
       ];
     }

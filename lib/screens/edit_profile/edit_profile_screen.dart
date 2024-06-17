@@ -49,7 +49,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(title: const Text("Edit Profile")),
+      appBar: AppBar(title: const Text("Edit Profil")),
       body: Obx(() {
         if (profileC.status.value == Status.LOADING) {
           return const LoadingScreenComponent();

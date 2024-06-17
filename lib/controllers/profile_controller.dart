@@ -86,8 +86,10 @@ class ProfileController extends GetxController {
           userProfileJson.jenisKelamin != null) {
         jenisKelaminController.value = userProfileJson.jenisKelamin.toString();
       }
-      tanggalLahirController.value.text =
+      // print(userProfileJson.tanggalLahir);
+      tanggalLahirController.value.text = userProfileJson.tanggalLahir ??
           DateFormat('yyyy-MM-dd').format(DateTime.now());
+
       status.value = Status.NONE;
     } catch (e) {
       errorMessage.value = "Gagal mengambil data profile !";
