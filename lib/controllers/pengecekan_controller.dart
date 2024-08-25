@@ -64,14 +64,14 @@ class PengecekanController {
       if (jenisPerangkat.toLowerCase() == 'oksimeter') {
         if (bluetoothC.hasilPengukuran.length > 1) {
           dataPengecekan['jenis_pengecekan'] = 'Detak Jantung';
-          dataPengecekan['nilai'] = bluetoothC.hasilPengukuran[0];
+          dataPengecekan['nilai'] = bluetoothC.hasilPengukuran[1];
           dataPengecekan['satuan'] = "bpm";
           await FirebaseFirestore.instance
               .collection('pengecekan_kesehatan')
               .add(dataPengecekan)
               .timeout(const Duration(seconds: 10));
           dataPengecekan['jenis_pengecekan'] = 'Saturasi Oksigen';
-          dataPengecekan['nilai'] = bluetoothC.hasilPengukuran[1];
+          dataPengecekan['nilai'] = bluetoothC.hasilPengukuran[0];
           dataPengecekan['satuan'] = "%";
           await FirebaseFirestore.instance
               .collection('pengecekan_kesehatan')

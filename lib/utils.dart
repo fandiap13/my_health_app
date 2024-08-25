@@ -125,7 +125,8 @@ class AppUtils {
 
   static PresentaseValueState presentaseKesehatanValue(
       {required double value, required String pengecekanKesehatan}) {
-    if (pengecekanKesehatan.toLowerCase() == "saturasi oksigen darah") {
+    // if (pengecekanKesehatan.toLowerCase() == "saturasi oksigen darah") {
+    if (pengecekanKesehatan.toLowerCase() == "saturasi oksigen") {
       if (value >= 95 && value <= 100) {
         return PresentaseValueState.NORMAL;
       } else if (value >= 90 && value <= 94) {
