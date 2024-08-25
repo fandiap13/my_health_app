@@ -66,6 +66,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '856973057878',
     projectId: 'health-care-f0096',
     storageBucket: 'health-care-f0096.appspot.com',
+    iosClientId: '856973057878-tjtms370qs34ophlnodh8vqvtppibire.apps.googleusercontent.com',
     iosBundleId: 'com.fandiaziz.bleClient',
   );
 
@@ -75,6 +76,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '856973057878',
     projectId: 'health-care-f0096',
     storageBucket: 'health-care-f0096.appspot.com',
+    iosClientId: '856973057878-gd5jef85tko3vf33gqp81o96n6l9c4fr.apps.googleusercontent.com',
     iosBundleId: 'com.fandiaziz.bleClient.RunnerTests',
   );
 }

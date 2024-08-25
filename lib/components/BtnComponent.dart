@@ -6,28 +6,39 @@ class BtnComponent extends StatelessWidget {
     super.key,
     required this.action,
     required this.text,
-    this.btnColor,
+    this.btnColor = kBlueColor,
     this.textColor,
+    this.isLoading = false,
   });
 
   final VoidCallback action;
   final String text;
   final Color? btnColor;
   final Color? textColor;
+  final bool? isLoading;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(btnColor ?? kBlueColor),
+            backgroundColor: MaterialStatePropertyAll(
+                isLoading != null && isLoading == true
+                    ? btnColor!.withOpacity(0.8)
+                    : btnColor),
             padding: const MaterialStatePropertyAll(
-                EdgeInsets.symmetric(vertical: 18)),
+                EdgeInsets.symmetric(vertical: 15)),
             shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40)))),
         onPressed: action,
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 24, color: textColor ?? Colors.white),
-        ));
+        child: isLoading != null && isLoading == true
+            ? const SizedBox(
+                width: 30,
+                height: 30,
+                child: CircularProgressIndicator(color: Colors.white))
+            : Text(
+                text,
+                style:
+                    TextStyle(fontSize: 20, color: textColor ?? Colors.white),
+              ));
   }
 }

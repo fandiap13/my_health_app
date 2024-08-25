@@ -1,8 +1,8 @@
 import 'package:ble_client/constants.dart';
 import 'package:ble_client/enums.dart';
-import 'package:ble_client/screen/home/home_screen.dart';
-import 'package:ble_client/screen/pengecekan_kesehatan/pengecekan_kesehatan_screen.dart';
-import 'package:ble_client/screen/profile/profile_screen.dart';
+import 'package:ble_client/screens/home/home_screen.dart';
+import 'package:ble_client/screens/pengecekan_kesehatan/pengecekan_kesehatan_screen.dart';
+import 'package:ble_client/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,37 +10,46 @@ class ButtonNavBar extends StatelessWidget {
   const ButtonNavBar({
     super.key,
     required this.selectedMenu,
+    this.bgColor,
   });
 
   final MenuState selectedMenu;
+  final Color? bgColor;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+      color: bgColor ?? Colors.transparent,
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
       width: double.infinity,
-      decoration: BoxDecoration(
-          color: kBlueColor, borderRadius: BorderRadius.circular(30)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          NavButton(
-            icon: Icons.home_rounded,
-            active: selectedMenu == MenuState.HOME,
-            action: () => Get.toNamed(HomeScreen.routeName),
-          ),
-          NavButton(
-            icon: Icons.medical_services_rounded,
-            active: selectedMenu == MenuState.PENGECEKAN_KESEHATAN,
-            action: () => Get.toNamed(PengecekanKesehatan.routeName),
-          ),
-          NavButton(
-            icon: Icons.person_rounded,
-            active: selectedMenu == MenuState.PROFILE,
-            action: () => Get.toNamed(ProfileScreen.routeName),
-          ),
-        ],
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+        decoration: BoxDecoration(
+            color: kBlueColor, borderRadius: BorderRadius.circular(30)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            NavButton(
+              icon: Icons.home_rounded,
+              active: selectedMenu == MenuState.HOME,
+              action: () {
+                // AppUtils.scaffoldMessage(message: "cek aja", context: context);
+                // AppUtils.toastMessage(message: "cek aja");
+                Get.toNamed(HomeScreen.routeName);
+              },
+            ),
+            NavButton(
+              icon: Icons.medical_services_rounded,
+              active: selectedMenu == MenuState.PENGECEKAN_KESEHATAN,
+              action: () => Get.toNamed(PengecekanKesehatan.routeName),
+            ),
+            NavButton(
+              icon: Icons.person_rounded,
+              active: selectedMenu == MenuState.PROFILE,
+              action: () => Get.toNamed(ProfileScreen.routeName),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -68,11 +77,11 @@ class NavButton extends StatelessWidget {
             Icon(
               icon,
               color: !active ? Colors.white.withOpacity(0.5) : Colors.white,
-              size: 35,
+              size: 30,
             ),
             if (active) ...[
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               Container(
                 width: 10,

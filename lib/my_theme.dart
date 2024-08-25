@@ -6,8 +6,10 @@ ThemeData myTheme() {
       useMaterial3: false,
       fontFamily: "Poppins",
       appBarTheme: appBarTheme(),
+      tooltipTheme: const TooltipThemeData(preferBelow: false),
       scaffoldBackgroundColor: Colors.white,
-      visualDensity: VisualDensity.adaptivePlatformDensity);
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      inputDecorationTheme: inputDecorationTheme());
 }
 
 AppBarTheme appBarTheme() {
@@ -18,4 +20,25 @@ AppBarTheme appBarTheme() {
       iconTheme: IconThemeData(color: kDarkColor),
       titleTextStyle:
           TextStyle(color: kTextColor, fontSize: 18, fontFamily: "Poppins"));
+}
+
+InputDecorationTheme inputDecorationTheme() {
+  OutlineInputBorder outlineInputBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(28),
+    gapPadding: 10,
+    borderSide: BorderSide.none,
+  );
+
+  return InputDecorationTheme(
+      floatingLabelBehavior: FloatingLabelBehavior.always,
+      labelStyle: const TextStyle(
+        color: kDarkColor,
+        fontWeight: FontWeight.w500,
+      ),
+      focusedBorder: outlineInputBorder,
+      enabledBorder: outlineInputBorder,
+      border: outlineInputBorder,
+      filled: true,
+      fillColor: kLightGrayColor,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 42, vertical: 20));
 }
