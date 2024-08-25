@@ -126,8 +126,9 @@ class TitleItem extends StatelessWidget {
             Text(
               "${value.toString()} $satuanPengukuran",
               style: const TextStyle(
-                color: kGreenColor,
-                fontWeight: FontWeight.w500,
+                // color: kGreenColor,
+                color: kTextColor,
+                // fontWeight: FontWeight.w500,
               ),
             ),
           ],

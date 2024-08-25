@@ -29,6 +29,7 @@ class _AllRiwayatKesehatanScreenState extends State<AllRiwayatKesehatanScreen> {
   void initState() {
     super.initState();
     _screenInit();
+    // print(arguments);
   }
 
   Future<void> _screenInit() async {
